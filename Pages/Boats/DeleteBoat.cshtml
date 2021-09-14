@@ -1,0 +1,44 @@
+﻿@page
+@model SejlKlubsApp.Pages.Boats.DeleteBoatModel
+@{
+    ViewData["Title"] = "DeleteBoat";
+}
+
+<h1>Slette Båd</h1>
+
+<h3>Er du siker at du vil slette denne både</h3>
+
+<div>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Boat.BoatType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Boat.BoatType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Boat.Color)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Boat.Color)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Boat.Condition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Boat.Condition)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Boat.ImageName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Boat.ImageName)
+        </dd>
+    </dl>
+    <form method="post">
+        <input type="hidden" asp-for="Boat.BoatId"/>
+        <input type="submit" value="Delete" class="btn btn-primary"/>
+        <a asp-page="GetAllBoats">Afbyrd sletning</a>
+    </form>
+</div>

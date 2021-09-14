@@ -1,0 +1,60 @@
+﻿@page
+@model SejlKlubsApp.Pages.Boats.GetAllBoatsModel
+@{
+    ViewData["Title"] = "GetAllBoats";
+}
+
+<h1>Liste af både</h1>
+<p>
+    <a asp-page="NewBoat" class="btn btn-primary">Tilføj Ny Båd</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Type
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Condition
+            </th>
+            <th>
+                ImageName
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Boats.Count() != 0)
+        {
+            @foreach (var item in Model.Boats)
+            {
+        <tr>
+            <td>
+                @item.BoatType
+            </td>
+            <td>
+                @item.Color
+            </td>
+            <td>
+                @item.Condition
+            </td>
+            <td>
+                @item.ImageName
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Boats/DeleteBoat" asp-route-id="@item.BoatId">Slet</a>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Boats/EditBoat" asp-route-id="@item.BoatId">Ændre</a>
+                </p>
+            </td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>
