@@ -11,6 +11,8 @@ namespace SejlKlubsApp.Pages.Boats
 {
     public class GetAllBoatsModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public string FilterCriteria { get; set; }
         public IEnumerable<Models.Boat> Boats { get; private set; }
         private IBoatService boatService;
 
@@ -21,7 +23,12 @@ namespace SejlKlubsApp.Pages.Boats
 
         public async Task OnGetAsync()
         {
-            Boats = await boatService.GetAllBoatsAsync();
+            if (!String.IsNullOrEmpty(FilterCriteria))
+            {
+                Boats = await boatService.GetBoatByNameAsync(FilterCriteria);
+            }
+            else
+                Boats = await boatService.GetAllBoatsAsync();
         }
 
     }

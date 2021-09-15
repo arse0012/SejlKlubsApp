@@ -8,10 +8,12 @@ namespace SejlKlubsApp.Services.Interfaces
 {
     public interface IBoatService
     {
+        Task<IEnumerable<Boat>> GetBoatByNameAsync(string name);
         Task<IEnumerable<Boat>> GetAllBoatsAsync();
         Task AddBoatAsync(Boat boat);
         Task DeleteBoatAsync(Boat boat);
         Task UpdateBoatAsync(Boat boat);
         Task<Boat> GetBoatByIdAsync(int id);
+
     }
 }

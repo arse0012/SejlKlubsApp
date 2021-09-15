@@ -8,6 +8,12 @@
 <p>
     <a asp-page="NewBoat" class="btn btn-primary">Tilføj Ny Båd</a>
 </p>
+<form>
+    <p>
+        Search: <input type="text" asp-for="FilterCriteria"/>
+        <input type="submit" value="Filter"/>
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>

@@ -20,6 +20,11 @@ namespace SejlKlubsApp.Services.Service
         {
             return await boatService.GetAllBoatsAsync();
         }
+
+        public async Task<IEnumerable<Boat>> GetBoatByNameAsync(string name)
+        {
+            return await boatService.GetBoatByNameAsync(name);
+        }
         public async Task AddBoatAsync(Boat boat)
         {
             await boatService.NewBoatAsync(boat);

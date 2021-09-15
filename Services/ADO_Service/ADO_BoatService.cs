@@ -45,6 +45,32 @@ namespace SejlKlubsApp.Services.ADO_Service
             return boats;
         }
 
+        public async Task<List<Boat>> GetBoatByNameAsync(string name)
+        {
+            string sql = $"Select * From Boat Where BoatType LIKE'" + @name + "%" + "'";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@name", name);
+                using (SqlDataReader dataReader = await command.ExecuteReaderAsync())
+                {
+                    while (await dataReader.ReadAsync())
+                    {
+                        Boat @boat = new Boat();
+                        @boat.BoatId = Convert.ToInt32(dataReader["BoatId"]);
+                        @boat.BoatType = Convert.ToString(dataReader["BoatType"]);
+                        @boat.Color = Convert.ToString(dataReader["Color"]);
+                        @boat.Condition = Convert.ToString(dataReader["Condition"]);
+                        @boat.ImageName = Convert.ToString(dataReader["ImageName"]);
+                        boats.Add(@boat);
+                    }
+                }
+            }
+
+            return boats;
+        }
+
         public async Task NewBoatAsync(Boat boat)
         {
             string sql = $"Insert Into Boat(BoatType, Color, Condition, ImageName) Values (@BoatType, @Color, @Condition, @ImageName)";
@@ -102,7 +128,7 @@ namespace SejlKlubsApp.Services.ADO_Service
 
         public async Task EditBoatAsync(Boat boat)
         {
-            string sql = $"Update Boat Set (BoatType, Color, Condition, ImageName) Values (@BoatType, @Color, @Condition, @ImageName) Where BoatId=@BoatId";
+            string sql = $"Update Boat Set BoatType=@BoatType, Color=@Color, Condition=@Condition, ImageName=@ImageName Where BoatId=@id";
             using (SqlConnection connection=new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
