@@ -31,5 +31,5 @@ namespace SejlKlubsApp.Pages.Boats
                 Boats = await boatService.GetAllBoatsAsync();
         }
 
-    }
+    }   
 }

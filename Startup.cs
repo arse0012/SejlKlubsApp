@@ -29,6 +29,8 @@ namespace SejlKlubsApp
             services.AddRazorPages();
             services.AddTransient<ADO_BoatService>();
             services.AddTransient<IBoatService, BoatService>();
+            services.AddTransient<ADO_SailorService>();
+            services.AddTransient<ISailorService, SailorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

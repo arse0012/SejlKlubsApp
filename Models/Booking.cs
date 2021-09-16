@@ -7,7 +7,7 @@ namespace SejlKlubsApp.Models
 {
     public class Booking
     {
-        public int bookingId { get; set; }
+        public int BookingId { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int BoatId { get; set; }

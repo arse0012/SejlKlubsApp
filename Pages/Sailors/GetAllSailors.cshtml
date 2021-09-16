@@ -1,0 +1,68 @@
+﻿@page
+@model SejlKlubsApp.Pages.Sailors.GetAllSailorsModel
+@{
+    ViewData["Title"] = "GetAllSailors";
+}
+
+<h1>List af Sailors</h1>
+<p>
+    <a asp-page="NewSailor" class="btn btn-primary">Tilføj Ny Sejler</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Navn
+            </th>
+            <th>
+                Alder
+            </th>
+            <th>
+                Telefonnummer
+            </th>
+            <th>
+                Emailaddress
+            </th>
+            <th>
+                Kodeord
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Sailors.Count() != 0)
+        {
+            @foreach(var item in Model.Sailors)
+            {
+        <tr>
+            <td>
+                @item.Name
+                @item.LastName
+            </td>
+            <td>
+                @item.Age
+            </td>
+            <td>
+                @item.Phone
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Password
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Sailors/DeleteSailor" asp-route-id="@item.SailorId">Slet</a>
+                </p>
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Sailors/EditSailor" asp-route-id="@item.SailorId">Ændre</a>
+                </p>
+            </td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>
