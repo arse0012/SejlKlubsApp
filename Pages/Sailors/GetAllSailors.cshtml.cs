@@ -14,7 +14,7 @@ namespace SejlKlubsApp.Pages.Sailors
         [BindProperty(SupportsGet =true)]
         public string FilterCriteria { get; set; }
         public IEnumerable<Sailor> Sailors { get; private set; }
-        ISailorService sailorService;
+        private ISailorService sailorService { get; set; }
         public GetAllSailorsModel(ISailorService service)
         {
             sailorService = service;
