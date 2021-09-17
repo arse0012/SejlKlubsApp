@@ -19,29 +19,28 @@ namespace SejlKlubsApp.Services.Service
         {
             return await sailorService.GetAllSailorsAsync();
         }
-        public Task AddSailorAsync(Sailor sailor)
+        public async Task<IEnumerable<Sailor>> GetSailorByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await sailorService.GetSailorByNameAsync(name);
+        }
+        public async Task AddSailorAsync(Sailor sailor)
+        {
+            await sailorService.NewSailorAsync(sailor);
         }
 
-        public Task DeleteSailorAsync(Sailor sailor)
+        public async Task DeleteSailorAsync(Sailor sailor)
         {
-            throw new NotImplementedException();
+            await sailorService.DeleteSailorAsync(sailor);
         }
 
-        public Task<Sailor> GetSailorById(int id)
+        public async Task<Sailor> GetSailorByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await sailorService.GetSailorByIdAsync(id);
         }
 
-        public Task<IEnumerable<Sailor>> GetSailorByNameAsync(string name)
+        public async Task UpdateSailorAsync(Sailor sailor)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateSailorAsync(Sailor sailor)
-        {
-            throw new NotImplementedException();
+            await sailorService.EditSailorAsync(sailor);
         }
     }
 }

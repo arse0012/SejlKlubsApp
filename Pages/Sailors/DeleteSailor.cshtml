@@ -1,0 +1,56 @@
+﻿@page
+@model SejlKlubsApp.Pages.Sailors.DeleteSailorModel
+@{
+    ViewData["Title"] = "DeleteSailor";
+}
+
+<h1>Slet Sejler</h1>
+
+<h3>Er du sikker at du vil slette denne sejler</h3>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.Age)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.Age)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sailor.Password)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sailor.Password)
+        </dd>
+    </dl>
+    <form method="post">
+        <input type="hidden" asp-for="Sailor.SailorId" />
+        <input type="submit" value="Delete" class="btn btn-primary" />
+        <a asp-page="GetAllSailors">Afbyrd sletning</a>
+    </form>
+</div>

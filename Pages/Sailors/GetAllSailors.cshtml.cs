@@ -21,7 +21,12 @@ namespace SejlKlubsApp.Pages.Sailors
         }
         public async Task OnGetAsync()
         {
-            Sailors = await sailorService.GetAllSailorsAsync();
+            if (!String.IsNullOrEmpty(FilterCriteria))
+            {
+                Sailors = await sailorService.GetSailorByNameAsync(FilterCriteria);
+            }
+            else
+                Sailors = await sailorService.GetAllSailorsAsync();
         }
     }
 }

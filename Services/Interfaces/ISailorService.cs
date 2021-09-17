@@ -13,6 +13,6 @@ namespace SejlKlubsApp.Services.Interfaces
         Task AddSailorAsync(Sailor sailor);
         Task DeleteSailorAsync(Sailor sailor);
         Task UpdateSailorAsync(Sailor sailor);
-        Task<Sailor> GetSailorById(int id);
+        Task<Sailor> GetSailorByIdAsync(int id);
     }
 }
