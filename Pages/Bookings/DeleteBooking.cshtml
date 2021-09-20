@@ -1,0 +1,47 @@
+﻿@page
+@model SejlKlubsApp.Pages.Bookings.DeleteBookingModel
+@{
+    ViewData["Title"] = "DeleteBooking";
+}
+
+<h1>DeleteBooking</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.BookingId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.BookingId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.BoatId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.BoatId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.SailorId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.SailorId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.DateFrom)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.DateFrom)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Booking.DateTo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Booking.DateTo)
+        </dd>
+    </dl>
+    <form method="post">
+        <input type="hidden" asp-for="Booking.BookingId"/>
+        <input type="submit" value="Delete" class="btn btn-danger"/>
+        <a asp-page="/Bookings/GetAllBookings">Back to list</a>
+    </form>
+</div>

@@ -1,0 +1,41 @@
+﻿@page
+@model SejlKlubsApp.Pages.Bookings.BookBoatModel
+@{
+    ViewData["Title"] = "BookBoat";
+}
+
+<h1>BookBoat</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="None" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Booking.BoatId" class="control-label"></label>
+                <input asp-for="@Model.Booking.BoatId" class="form-control" />
+                <span asp-validation-for="@Model.Booking.BoatId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Booking.SailorId" class="control-label"></label>
+                <select asp-for="@Model.Booking.SailorId" class="form-control" 
+                        asp-items="@Model.SailorCodes">
+                    <option value="">-- Select Sailor --</option>
+                </select>
+                <span asp-validation-for="@Model.Booking.SailorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Booking.DateFrom" class="control-label"></label>
+                <input asp-for="@Model.Booking.DateFrom" class="form-control" />
+                <span asp-validation-for="@Model.Booking.DateFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Booking.DateTo" class="control-label"></label>
+                <input asp-for="@Model.Booking.DateTo" class="form-control" />
+                <span asp-validation-for="@Model.Booking.DateTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Book" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>

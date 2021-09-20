@@ -1,0 +1,64 @@
+﻿@page
+@model SejlKlubsApp.Pages.Bookings.GetAllBookingsModel
+@{
+    ViewData["Title"] = "GetAllBookings";
+}
+
+<h1>Liste af Bookings</h1>
+
+<div>
+    <ul>
+        <li>Der er @Model.Bookings.Count() bookinger </li>
+    </ul>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                bookingId
+            </th>
+            <th>
+                SailorId
+            </th>
+            <th>
+                BoatId
+            </th>
+            <th>
+                Fra
+            </th>
+            <th>
+                Til
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Bookings.Count() != 0)
+        {
+            @foreach(var item in Model.Bookings)
+            {
+        <tr>
+            <td>
+                @item.BookingId
+            </td>
+            <td>
+                @item.SailorId
+            </td>
+            <td>
+                @item.BoatId
+            </td>
+            <td>
+                @item.DateFrom
+            </td>
+            <td>
+                @item.DateTo
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Bookings/DeleteBooking" asp-route-id="@item.BookingId">Slet</a>
+                </p>
+            </td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>

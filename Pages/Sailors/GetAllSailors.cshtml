@@ -1,5 +1,7 @@
 ﻿@page
 @model SejlKlubsApp.Pages.Sailors.GetAllSailorsModel
+@using SejlKlubsApp.Services.Interfaces
+@inject IBookingService _service
 @{
     ViewData["Title"] = "GetAllSailors";
 }
@@ -40,9 +42,9 @@
         </tr>
     </thead>
     <tbody>
-        @if(Model.Sailors.Count() != 0)
+        @if (Model.Sailors.Count() != 0)
         {
-            @foreach(var item in Model.Sailors)
+            @foreach (var item in Model.Sailors)
             {
         <tr>
             <td>
@@ -60,6 +62,11 @@
             </td>
             <td>
                 @item.Password
+            </td>
+            <td>
+                <p>
+                    <a asp-page="/Bookings/GetAllBookings" asp-page-handler="MyBookings" asp-route-cid="@item.SailorId">Show my Bookings</a>
+                </p>
             </td>
             <td>
                 <p>
