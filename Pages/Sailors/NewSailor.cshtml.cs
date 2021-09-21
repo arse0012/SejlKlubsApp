@@ -22,7 +22,7 @@ namespace SejlKlubsApp.Pages.Sailors
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Page();
             }
             sailorService.AddSailorAsync(sailor);
             return RedirectToPage("GetAllSailors");

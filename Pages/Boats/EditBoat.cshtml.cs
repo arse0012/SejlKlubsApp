@@ -28,6 +28,10 @@ namespace SejlKlubsApp.Pages.Boats
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             await boatService.UpdateBoatAsync(Boat);
             return RedirectToPage("GetAllBoats");
         }

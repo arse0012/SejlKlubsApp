@@ -25,7 +25,7 @@ namespace SejlKlubsApp.Pages.Boats
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Page();
             }
 
             boatService.AddBoatAsync(boat);

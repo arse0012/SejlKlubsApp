@@ -24,6 +24,10 @@ namespace SejlKlubsApp.Pages.Sailors
         }
         public async Task <IActionResult> OnPostAsync(Sailor sailor)
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             await sailorService.UpdateSailorAsync(sailor);
             return RedirectToPage("GetAllSailors");
         }
