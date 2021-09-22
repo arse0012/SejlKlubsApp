@@ -27,6 +27,7 @@ namespace SejlKlubsApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddSingleton<LogInService>();
             services.AddTransient<ADO_BoatService>();
             services.AddTransient<IBoatService, BoatService>();
             services.AddTransient<ADO_SailorService>();

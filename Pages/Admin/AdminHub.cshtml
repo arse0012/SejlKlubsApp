@@ -1,0 +1,23 @@
+﻿@page
+@model SejlKlubsApp.Pages.Admin.AdminHubModel
+@{
+    ViewData["Title"] = "AdminHub";
+}
+
+<h1>AdminHub</h1>
+<form method="post">
+    <div class="form-group">
+        <button asp-page-handler="CreateBoat" class="alert-info">Ny båd</button>
+    </div>
+    <div class="form-group">
+        <button asp-page-handler="CreateSailor" class="alert-info">Ny sejlor</button>
+    </div>
+
+    <div class="form-group">
+        <button asp-page-handler="AllBoats" class="alert-info">Bådliste</button>
+    </div>
+    <div class="form-group">
+        <button asp-page-handler="AllSailors" class="alert-info">Sejlorliste</button>
+    </div>
+</form>
+

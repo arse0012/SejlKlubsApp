@@ -38,6 +38,8 @@ namespace SejlKlubsApp.Services.ADO_Service
                         @sailor.Phone = Convert.ToString(dataReader["Phone"]);
                         @sailor.Email = Convert.ToString(dataReader["Email"]);
                         @sailor.Password = Convert.ToString(dataReader["Password"]);
+                        @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                        sailor.Member = Convert.ToBoolean(dataReader["Member"]);
                         sailors.Add(@sailor);
                     }
                 }
@@ -64,6 +66,8 @@ namespace SejlKlubsApp.Services.ADO_Service
                         @sailor.Phone = Convert.ToString(dataReader["Phone"]);
                         @sailor.Email = Convert.ToString(dataReader["Email"]);
                         @sailor.Password = Convert.ToString(dataReader["Password"]);
+                        @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                        @sailor.Member = Convert.ToBoolean(dataReader["Member"]);
                         sailors.Add(@sailor);
                     }
                 }
@@ -121,6 +125,8 @@ namespace SejlKlubsApp.Services.ADO_Service
                         sailor.Phone = Convert.ToString(dataReader["Phone"]);
                         sailor.Email = Convert.ToString(dataReader["Email"]);
                         sailor.Password = Convert.ToString(dataReader["Password"]);
+                        sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                        sailor.Member = Convert.ToBoolean(dataReader["Member"]);
                     }
                 }
             }

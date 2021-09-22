@@ -21,6 +21,12 @@ namespace SejlKlubsApp.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Kodeord skal fyldes ud")]
         public string Password { get; set; }
+        [BindProperty, DataType(DataType.Password), Display(Name = "Password")]
+        public string PasswordCheck { get; set; }
+        [Required(ErrorMessage = "Status skal sættes")]
+        public bool Member { get; set; }
+        [Required(ErrorMessage = "Status skal sættes")]
+        public bool Admin { get; set; }
 
     }
 }
