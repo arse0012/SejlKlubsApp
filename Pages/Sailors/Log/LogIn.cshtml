@@ -1,0 +1,25 @@
+﻿@page
+@model SejlKlubsApp.Pages.Sailors.Log.LogInModel
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<h1>LogIn</h1>
+
+<p class="text-danger">@Model.AccessDenied</p>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="@Model.Sailor.Name" class="control-label"></label>
+        <input asp-for="@Model.Sailor.Name" class="form-control" />
+        <span asp-validation-for="@Model.Sailor.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Sailor.PasswordCheck" class="control-label"></label>
+        <input asp-for="@Model.Sailor.PasswordCheck" class="form-control" />
+        <span asp-validation-for="@Model.Sailor.PasswordCheck" class="text-danger"></span>
+    </div>
+    <div class="form-check-group">
+        <input type="submit" value="Log In" class="btn btn-primary"/>
+    </div>
+</form>
