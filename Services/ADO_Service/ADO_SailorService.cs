@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SejlKlubsApp.Exceptions;
 using SejlKlubsApp.Models;
 using System;
 using System.Collections.Generic;
@@ -22,26 +23,33 @@ namespace SejlKlubsApp.Services.ADO_Service
         public async Task<List<Sailor>> GetAllSailorsAsync()
         {
             string sql = "Select * From Sailor";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            await using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sql, connection);
-                using (SqlDataReader dataReader=await command.ExecuteReaderAsync())
+                await using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while(await dataReader.ReadAsync())
+                    try 
                     {
-                        Sailor @sailor = new Sailor();
-                        @sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        @sailor.Name = Convert.ToString(dataReader["Name"]);
-                        @sailor.LastName = Convert.ToString(dataReader["LastName"]);
-                        @sailor.Age = Convert.ToInt32(dataReader["Age"]);
-                        @sailor.Phone = Convert.ToString(dataReader["Phone"]);
-                        @sailor.Email = Convert.ToString(dataReader["Email"]);
-                        @sailor.Password = Convert.ToString(dataReader["Password"]);
-                        @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
-                        sailor.Member = Convert.ToBoolean(dataReader["Member"]);
-                        sailors.Add(@sailor);
+                        await command.Connection.OpenAsync();
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        while (await dataReader.ReadAsync())
+                        {
+                            Sailor @sailor = new Sailor();
+                            @sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            @sailor.Name = Convert.ToString(dataReader["Name"]);
+                            @sailor.LastName = Convert.ToString(dataReader["LastName"]);
+                            @sailor.Age = Convert.ToInt32(dataReader["Age"]);
+                            @sailor.Phone = Convert.ToString(dataReader["Phone"]);
+                            @sailor.Email = Convert.ToString(dataReader["Email"]);
+                            @sailor.Password = Convert.ToString(dataReader["Password"]);
+                            @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                            sailors.Add(@sailor);
+                        }
                     }
+                    catch(Exception ex)
+                    {
+                        return null;
+                    }
+                    
                 }
             }
             return sailors;
@@ -49,38 +57,44 @@ namespace SejlKlubsApp.Services.ADO_Service
         public async Task<List<Sailor>> GetSailorByNameAsync(string name)
         {
             string sql = $"Select * From Sailor Where Name LIKE'" + @name + "%" + "'";
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            await using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@name", name);
-                using(SqlDataReader dataReader = await command.ExecuteReaderAsync())
+                await using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while(await dataReader.ReadAsync())
+                    try
                     {
-                        Sailor @sailor = new Sailor();
-                        @sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        @sailor.Name = Convert.ToString(dataReader["Name"]);
-                        @sailor.LastName = Convert.ToString(dataReader["LastName"]);
-                        @sailor.Age = Convert.ToInt32(dataReader["Age"]);
-                        @sailor.Phone = Convert.ToString(dataReader["Phone"]);
-                        @sailor.Email = Convert.ToString(dataReader["Email"]);
-                        @sailor.Password = Convert.ToString(dataReader["Password"]);
-                        @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
-                        @sailor.Member = Convert.ToBoolean(dataReader["Member"]);
-                        sailors.Add(@sailor);
+                        await command.Connection.OpenAsync();
+                        command.Parameters.AddWithValue("@name", name);
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        while (await dataReader.ReadAsync())
+                        {
+                            Sailor @sailor = new Sailor();
+                            @sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            @sailor.Name = Convert.ToString(dataReader["Name"]);
+                            @sailor.LastName = Convert.ToString(dataReader["LastName"]);
+                            @sailor.Age = Convert.ToInt32(dataReader["Age"]);
+                            @sailor.Phone = Convert.ToString(dataReader["Phone"]);
+                            @sailor.Email = Convert.ToString(dataReader["Email"]);
+                            @sailor.Password = Convert.ToString(dataReader["Password"]);
+                            @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                            sailors.Add(@sailor);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        return null;
+                    }                   
                 }
             }
             return sailors;
         }
-        public async Task NewSailorAsync(Sailor sailor)
+        public async Task<bool> NewSailorAsync(Sailor sailor)
         {
-            string sql = $"Insert Into Sailor(Name, LastName, Age, Phone, Email, Password) Values(@Name, @LastName, @Age, @Phone, @Email, @Password)";
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            string sql = $"Insert Into Sailor(Name, LastName, Age, Phone, Email, Password, Admin) Values(@Name, @LastName, @Age, @Phone, @Email, @Password, @Admin)";
+            await using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                
+                await using(SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("Name", sailor.Name);
                     command.Parameters.AddWithValue("LastName", sailor.LastName);
@@ -88,58 +102,101 @@ namespace SejlKlubsApp.Services.ADO_Service
                     command.Parameters.AddWithValue("Phone", sailor.Phone);
                     command.Parameters.AddWithValue("Email", sailor.Email);
                     command.Parameters.AddWithValue("Password", sailor.Password);
+                    command.Parameters.AddWithValue("Admin", sailor.Admin);
+                    if (EmailExist(sailor.Email))
+                    {
+                        throw new ExistsException("Email bruges allerede");
+                    }
+                    await command.Connection.OpenAsync();
                     int affectedRows = await command.ExecuteNonQueryAsync();
+                    if (affectedRows == 1)
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
         }
-        public async Task DeleteSailorAsync(Sailor sailor)
+        private bool EmailExist(string email)
+        {
+            foreach(Sailor s in GetAllSailorsAsync().Result)
+            {
+                if (s.Email == email)
+                    return true;
+            }
+            return false;
+        }
+        public async Task<Sailor> DeleteSailorAsync(Sailor sailor)
         {
             string sql = $"Delete From Sailor Where SailorId=@id";
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            await using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@id", sailor.SailorId);
-                    int affectedRows = await command.ExecuteNonQueryAsync();
-                }
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        command.Parameters.AddWithValue("@id", sailor.SailorId);
+                        int affectedRows = await command.ExecuteNonQueryAsync();
+                        if (affectedRows == 1)
+                        {
+                            return sailor;
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        return null;
+                    }                    
+                }            
             }
+            return null;
         }
         public async Task<Sailor> GetSailorByIdAsync(int id)
         {
             Sailor @sailor = new Sailor();
             string sql = $"Select * From Sailor Where SailorId=@id";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            await using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                await using(SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@id", id);
-                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
-                    while (dataReader.Read())
+                    try
                     {
-                        sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        sailor.Name = Convert.ToString(dataReader["Name"]);
-                        sailor.LastName = Convert.ToString(dataReader["LastName"]);
-                        sailor.Age = Convert.ToInt32(dataReader["Age"]);
-                        sailor.Phone = Convert.ToString(dataReader["Phone"]);
-                        sailor.Email = Convert.ToString(dataReader["Email"]);
-                        sailor.Password = Convert.ToString(dataReader["Password"]);
-                        sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
-                        sailor.Member = Convert.ToBoolean(dataReader["Member"]);
+                        await command.Connection.OpenAsync();
+                        command.Parameters.AddWithValue("@id", id);
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        if (dataReader.Read())
+                        {
+                            sailor.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            sailor.Name = Convert.ToString(dataReader["Name"]);
+                            sailor.LastName = Convert.ToString(dataReader["LastName"]);
+                            sailor.Age = Convert.ToInt32(dataReader["Age"]);
+                            sailor.Phone = Convert.ToString(dataReader["Phone"]);
+                            sailor.Email = Convert.ToString(dataReader["Email"]);
+                            sailor.Password = Convert.ToString(dataReader["Password"]);
+                            sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                        }
+                        else
+                        {
+                            sailor = null;
+                        }
                     }
+                    catch(Exception ex)
+                    {
+                        return null;
+                    }
+                    
                 }
             }
             return @sailor;
         }
-        public async Task EditSailorAsync(Sailor sailor)
+        public async Task<bool> EditSailorAsync(Sailor sailor)
         {
             string sql = $"Update Sailor Set Name=@Name, LastName=@LastName, Age=@Age, Phone=@Phone, Email=@Email, Password=@Password Where SailorId=@id";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+            await using (SqlConnection connection = new SqlConnection(connectionString))
+            {             
+                await using(SqlCommand command = new SqlCommand(sql, connection))
                 {
+                    await command.Connection.OpenAsync();
                     command.Parameters.AddWithValue("@id", sailor.SailorId);
                     command.Parameters.AddWithValue("@Name", sailor.Name);
                     command.Parameters.AddWithValue("@LastName", sailor.LastName);
@@ -148,8 +205,13 @@ namespace SejlKlubsApp.Services.ADO_Service
                     command.Parameters.AddWithValue("@Email", sailor.Email);
                     command.Parameters.AddWithValue("@Password", sailor.Password);
                     int affectedRows = await command.ExecuteNonQueryAsync();
+                    if(affectedRows == 1)
+                    {
+                        return true;
+                    }
                 }
             }
+            return false;
         }
     }
 }

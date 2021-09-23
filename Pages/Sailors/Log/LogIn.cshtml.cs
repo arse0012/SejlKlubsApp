@@ -30,7 +30,7 @@ namespace SejlKlubsApp.Pages.Sailors.Log
         {
             foreach (Sailor sailor in sailorService.GetAllSailorsAsync().Result)
             {
-                if (sailor.Name == Sailor.Name)
+                if (sailor.Email == Sailor.Email)
                 {
                     if (sailor.Password == Sailor.PasswordCheck)
                     {

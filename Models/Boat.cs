@@ -14,7 +14,7 @@ namespace SejlKlubsApp.Models
         public string BoatType { get; set; }
         public string Color { get; set; }
         public string Condition { get; set; }
-        [Required(ErrorMessage = "Insæt bådens billede")]
+        
         public string ImageName { get; set; }
 
     }

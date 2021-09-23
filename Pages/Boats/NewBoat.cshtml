@@ -2,7 +2,6 @@
 @model SejlKlubsApp.Pages.Boats.NewBoatModel
 @{
     ViewData["Title"] = "NewBoat";
-    var images = "~/images/" + (Model.Boat.ImageName ?? "noImages.jpg");
 }
 
 <h1>Tilføj en ny Båd</h1>
@@ -48,9 +47,6 @@
                     });
                 </script>
             }
-            <div class="form-group">
-                <img class="thumbnail" src="@images" width="80" height="70" asp-append-version="true" />
-            </div>
         </form>
     </div>
 </div>

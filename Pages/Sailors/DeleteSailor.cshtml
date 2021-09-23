@@ -8,49 +8,60 @@
 
 <h3>Er du sikker at du vil slette denne sejler</h3>
 
-<div>
+<div class="alert alert-warning" role="alert">
+    @Model.InfoText
+</div>
+<form method="post">
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.Name)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.SailorId" class="control-label"></label>
+            <input asp-for="@Model.Sailor.SailorId" readonly="readonly" class="form-control" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.LastName)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Name" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Name" readonly="readonly" class="form-control" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.Age)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.Age)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.LastName" class="control-label"></label>
+            <input asp-for="@Model.Sailor.LastName" readonly="readonly" class="form-control" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.Phone)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.Phone)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Age" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Age" readonly="readonly" class="form-control" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.Email)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Phone" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Phone" readonly="readonly" class="form-control" />
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Sailor.Password)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Sailor.Password)
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Email" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Email" readonly="readonly" class="form-control" />
+        </dd>
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Password" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Password" readonly="readonly" class="form-control" />
+        </dd>
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Password2" class="control-label"></label>
+            <input asp-for="@Model.Sailor.Password2" class="form-control" />
+            <span asp-validation-for="@Model.Sailor.Password2" class="text-danger"></span>
+        </dd>
+        <dd class="form-group">
+            <label asp-for="@Model.Sailor.Admin" class="control-label"></label>
+            @if (Model.Sailor.Admin)
+            {
+                <p>Ja</p>
+            }
+            else
+            {
+                <p>Nej</p>
+            }
         </dd>
     </dl>
-    <form method="post">
-        <input type="hidden" asp-for="Sailor.SailorId" />
-        <input type="submit" value="Delete" class="btn btn-primary" />
+    <input type="submit" value="Delete" class="btn btn-danger" />&nbsp; | &nbsp;
+    @if (Model.Sailor.Admin)
+    {
         <a asp-page="GetAllSailors">Afbyrd sletning</a>
-    </form>
-</div>
+    }
+</form>

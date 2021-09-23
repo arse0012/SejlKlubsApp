@@ -56,7 +56,7 @@ namespace SejlKlubsApp.Pages.Boats
             string uniqueFileName = null;
             if (Photo != null)
             {
-                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + Photo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))

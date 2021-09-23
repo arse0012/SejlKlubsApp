@@ -5,7 +5,9 @@
 }
 
 <h1>Ændre sejler status</h1>
-
+<div class="alert alert-warning" role="alert">
+    @Model.InfoText
+</div>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
@@ -39,10 +41,20 @@
             <div class="form-group">
                 <label asp-for="@Model.Sailor.Password" class="control-label"></label>
                 <input asp-for="@Model.Sailor.Password" class="form-control" />
-                <span asp-validation-for="@Model.Sailor.Password" class="text-danger"></span>
+                @*<span asp-validation-for="@Model.Sailor.Password" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Sailor.Password2" class="control-label"></label>
+                <input asp-for="@Model.Sailor.Password2" class="form-control" />
+                <span asp-validation-for="@Model.Sailor.Password2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Gem" class="btn btn-primary" />
+                @if (Model.Sailor.Admin)
+                {
+                    <p>&nbsp; | &nbsp;</p>
+                    <a asp-page="./GetAllSailors">Tilbage til listen</a>
+                }
             </div>
         </form>
     </div>

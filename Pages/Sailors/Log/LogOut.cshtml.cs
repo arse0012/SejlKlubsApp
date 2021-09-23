@@ -18,7 +18,7 @@ namespace SejlKlubsApp.Pages.Sailors.Log
         public IActionResult OnGet()
         {
             logInService.SailorLogOut();
-            return RedirectToPage("");
+            return RedirectToPage("/Index");
         }
     }
 }
