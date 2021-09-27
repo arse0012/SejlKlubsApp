@@ -28,6 +28,7 @@ namespace SejlKlubsApp.Models
         public string PasswordCheck { get; set; }
         [Required(ErrorMessage = "Status skal sættes")]
         public bool Admin { get; set; }
+        public string SailorImage { get; set; }
 
     }
 }

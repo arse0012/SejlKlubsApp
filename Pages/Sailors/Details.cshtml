@@ -22,6 +22,11 @@
 
 <table class="table table-bordered">
     <tr>
+        <td>
+            <img src="~/photos/@Model.Sailor.SailorImage" class="rounded" width="80" height="70" />
+        </td>
+    </tr>
+    <tr>
         <th>
             <label asp-for="Sailor.Name" class="control-label"></label>
         </th>
@@ -78,6 +83,12 @@
 <form method="post" asp-page-handler="UpdateSailor">
     <p>
         <button class="alert-info">Updatere sejler</button>
+    </p>
+    <input type="hidden" name="id" value="@Model.Sailor.SailorId" />
+</form>
+<form method="post" asp-page-handler="ChangePassword">
+    <p>
+        <button class="alert-info">Ændre kodeord</button>
     </p>
     <input type="hidden" name="id" value="@Model.Sailor.SailorId" />
 </form>

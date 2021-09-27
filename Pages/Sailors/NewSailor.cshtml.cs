@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SejlKlubsApp.Exceptions;
@@ -18,10 +21,14 @@ namespace SejlKlubsApp.Pages.Sailors
         public string InfoText { get; set; }
         public IEnumerable<Sailor> Sailors { get; private set; }
         private readonly ISailorService sailorService;
+        private IWebHostEnvironment webHostEnvironment;
         public string RndPass { get; private set; }
-        public NewSailorModel(ISailorService service)
+        [BindProperty]
+        public IFormFile Photo { get; set; }
+        public NewSailorModel(ISailorService service, IWebHostEnvironment webHostEnvironment)
         {
             sailorService = service;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public async Task OnGetAsync()
         {
@@ -48,6 +55,15 @@ namespace SejlKlubsApp.Pages.Sailors
             }
             try
             {
+                if (Photo != null)
+                {
+                    if (sailor.SailorImage != null)
+                    {
+                        string filePath = Path.Combine(webHostEnvironment.WebRootPath, "photos", sailor.SailorImage);
+                        System.IO.File.Delete(filePath);
+                    }
+                    sailor.SailorImage = ProcessUploadedFile();
+                }
                 await sailorService.AddSailorAsync(sailor);
                 Sailors = await sailorService.GetAllSailorsAsync();
                 
@@ -65,6 +81,21 @@ namespace SejlKlubsApp.Pages.Sailors
                 return Page();
             }
             return RedirectToPage("GetAllSailors");
+        }
+        private string ProcessUploadedFile()
+        {
+            string uniqueFileName = null;
+            if (Photo != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "photos");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    Photo.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

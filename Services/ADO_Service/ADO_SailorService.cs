@@ -42,6 +42,7 @@ namespace SejlKlubsApp.Services.ADO_Service
                             @sailor.Email = Convert.ToString(dataReader["Email"]);
                             @sailor.Password = Convert.ToString(dataReader["Password"]);
                             @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                            @sailor.SailorImage = Convert.ToString(dataReader["SailorImage"]);
                             sailors.Add(@sailor);
                         }
                     }
@@ -77,6 +78,7 @@ namespace SejlKlubsApp.Services.ADO_Service
                             @sailor.Email = Convert.ToString(dataReader["Email"]);
                             @sailor.Password = Convert.ToString(dataReader["Password"]);
                             @sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                            @sailor.SailorImage = Convert.ToString(dataReader["SailorImage"]);
                             sailors.Add(@sailor);
                         }
                     }
@@ -90,7 +92,7 @@ namespace SejlKlubsApp.Services.ADO_Service
         }
         public async Task<bool> NewSailorAsync(Sailor sailor)
         {
-            string sql = $"Insert Into Sailor(Name, LastName, Age, Phone, Email, Password, Admin) Values(@Name, @LastName, @Age, @Phone, @Email, @Password, @Admin)";
+            string sql = $"Insert Into Sailor(Name, LastName, Age, Phone, Email, Password, Admin, SailorImage) Values(@Name, @LastName, @Age, @Phone, @Email, @Password, @Admin, @SailorImage)";
             await using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 
@@ -103,6 +105,7 @@ namespace SejlKlubsApp.Services.ADO_Service
                     command.Parameters.AddWithValue("Email", sailor.Email);
                     command.Parameters.AddWithValue("Password", sailor.Password);
                     command.Parameters.AddWithValue("Admin", sailor.Admin);
+                    command.Parameters.AddWithValue("SailorImage", sailor.SailorImage);
                     if (EmailExist(sailor.Email))
                     {
                         throw new ExistsException("Email bruges allerede");
@@ -174,6 +177,7 @@ namespace SejlKlubsApp.Services.ADO_Service
                             sailor.Email = Convert.ToString(dataReader["Email"]);
                             sailor.Password = Convert.ToString(dataReader["Password"]);
                             sailor.Admin = Convert.ToBoolean(dataReader["Admin"]);
+                            sailor.SailorImage = Convert.ToString(dataReader["SailorImage"]);
                         }
                         else
                         {
@@ -191,7 +195,7 @@ namespace SejlKlubsApp.Services.ADO_Service
         }
         public async Task<bool> EditSailorAsync(Sailor sailor)
         {
-            string sql = $"Update Sailor Set Name=@Name, LastName=@LastName, Age=@Age, Phone=@Phone, Email=@Email, Password=@Password Where SailorId=@id";
+            string sql = $"Update Sailor Set Name=@Name, LastName=@LastName, Age=@Age, Phone=@Phone, Email=@Email, Password=@Password, SailorImage=@SailorImage Where SailorId=@id";
             await using (SqlConnection connection = new SqlConnection(connectionString))
             {             
                 await using(SqlCommand command = new SqlCommand(sql, connection))
@@ -204,6 +208,7 @@ namespace SejlKlubsApp.Services.ADO_Service
                     command.Parameters.AddWithValue("@Phone", sailor.Phone);
                     command.Parameters.AddWithValue("@Email", sailor.Email);
                     command.Parameters.AddWithValue("@Password", sailor.Password);
+                    command.Parameters.AddWithValue("@SailorImage", sailor.SailorImage);
                     int affectedRows = await command.ExecuteNonQueryAsync();
                     if(affectedRows == 1)
                     {

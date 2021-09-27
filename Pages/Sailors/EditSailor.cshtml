@@ -2,6 +2,7 @@
 @model SejlKlubsApp.Pages.Sailors.EditSailorModel
 @{
     ViewData["Title"] = "EditSailor";
+    var photos = "~/photos/" + (Model.Sailor.SailorImage ?? "noPhotos.jpg");
 }
 
 <h1>Ændre sejler status</h1>
@@ -10,9 +11,10 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.Sailor.SailorId" />
+            <input type="hidden" asp-for="@Model.Sailor.SailorImage" />
             <div class="form-group">
                 <label asp-for="@Model.Sailor.Name" class="control-label"></label>
                 <input asp-for="@Model.Sailor.Name" class="form-control" />
@@ -48,6 +50,13 @@
                 <input asp-for="@Model.Sailor.Password2" class="form-control" />
                 <span asp-validation-for="@Model.Sailor.Password2" class="text-danger"></span>
             </div>
+            <div class="form-group row">
+                <label asp-for="Photo" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="Photo" class="custom-file-input form-control" />
+                    <label class="custom-file-label">Click here to input Photo</label>
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Gem" class="btn btn-primary" />
                 @if (Model.Sailor.Admin)
@@ -55,6 +64,20 @@
                     <p>&nbsp; | &nbsp;</p>
                     <a asp-page="./GetAllSailors">Tilbage til listen</a>
                 }
+            </div>
+
+            @section Scripts{
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file-input').on("change", function () {
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).next('.custom-file-label').html(fileName);
+                        });
+                    });
+                </script>
+            }
+            <div class="form-group">
+                <img class="thumbnail" src="@photos" width="80" height="70" asp-append-version="true" />
             </div>
         </form>
     </div>

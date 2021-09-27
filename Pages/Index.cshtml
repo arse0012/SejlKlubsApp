@@ -1,4 +1,6 @@
 ﻿@page
+@using SejlKlubsApp.Services.Service
+@using SejlKlubsApp.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -8,3 +10,50 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<br />
+<div id="carouselIndex" class="carousel slide w-50 mx-auto" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Boats/GetAllBoats">
+                <img class="d-block w-100" src="~/images/Boat.jfif" alt="Boat" />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Tag en tur</h5>
+                </div>
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Boats/GetAllBoats">
+                <img class="d-block w-100" src="~/images/OceanBoat.jfif" alt="OceanBoat" />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Cruise</h5>
+                </div>
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Boats/GetAllBoats">
+                <img class="d-block w-100" src="~/images/GkagDqux-boat.jfif" alt="GkagDqux-boat" />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Ride along</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselIndex" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndex" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+@*<br />
+@if(Model.logService.GetLoggedSailor() != null)
+{
+    if(Model.Boats != null && Model.Boats.Count != 0)
+    {
+        <div>
+
+        </div>
+    }
+}*@

@@ -34,6 +34,10 @@ namespace SejlKlubsApp.Pages.Sailors
         {
             return RedirectToPage("/Sailors/EditSailor", new { id = id });
         }
+        public IActionResult OnPostChangePassword(int id)
+        {
+            return RedirectToPage("/Sailors/ChangePassword", new { id = id });
+        }
         public IActionResult OnPostDeleteSailor(int id)
         {
             return RedirectToPage("/Sailors/DeleteSailor", new { id = id });
