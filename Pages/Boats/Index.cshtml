@@ -1,0 +1,76 @@
+﻿@page
+@model SejlKlubsApp.Pages.Boats.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<form>
+    <p>
+        Search: <input type="text" asp-for="FilterCriteria" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<div>
+    <ul>
+        <li>Der er @Model.Boats.Count() Både </li>
+    </ul>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Type
+            </th>
+            <th>
+                Color
+            </th>
+            <th>
+                Condition
+            </th>
+            <th>
+                ImageName
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Boats.Count() != 0)
+        {
+            @foreach (var item in Model.Boats)
+            {
+                <tr>
+                    <td>
+                        @item.BoatType
+                    </td>
+                    <td>
+                        @item.Color
+                    </td>
+                    <td>
+                        @item.Condition
+                    </td>
+                    <td>
+                        <img src="~/images/@item.ImageName" class="rounded" width="80" height="70" />
+                    </td>
+                    <td>
+                        @if (Model.logInService.GetLoggedSailor() != null)
+                        {
+                            <p>
+                                <a asp-page="/Bookings/BookBoat" asp-route-id="@item.BoatId">Book</a>
+                            </p>
+                            @*@if (Model.userBookings.Exists(x => x.SailorId == Model.currentSailor.SailorId))
+                            {
+
+                            }
+                            else
+                            {
+
+                            }*@
+
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

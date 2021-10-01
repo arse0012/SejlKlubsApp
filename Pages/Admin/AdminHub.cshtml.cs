@@ -29,5 +29,9 @@ namespace SejlKlubsApp.Pages.Admin
         {
             return RedirectToPage("/Sailors/GetAllSailors");
         }
+        public IActionResult OnPostAllBookings()
+        {
+            return RedirectToPage("/Bookings/GetAllBookings");
+        }
     }
 }

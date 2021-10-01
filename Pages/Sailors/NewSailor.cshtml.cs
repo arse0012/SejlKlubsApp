@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SejlKlubsApp.Exceptions;
 using SejlKlubsApp.Models;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 
 namespace SejlKlubsApp.Pages.Sailors
 {

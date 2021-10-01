@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 
 namespace SejlKlubsApp.Pages.Bookings
 {

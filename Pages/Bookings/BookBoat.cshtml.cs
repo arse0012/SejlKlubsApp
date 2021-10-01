@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SejlKlubsApp.Models;
 using SejlKlubsApp.Services.ADO_Service;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 
 namespace SejlKlubsApp.Pages.Bookings
 {
     public class BookBoatModel : PageModel
     {
         [BindProperty]
-        public Models.Booking Booking { get; set; }
+        public Booking Booking { get; set; }
         private IBookingService bookingService;
         IWebHostEnvironment webHostEnvironment;
         public SelectList SailorCodes { get; set; }
@@ -23,7 +23,7 @@ namespace SejlKlubsApp.Pages.Bookings
         {
             bookingService = service;
             this.webHostEnvironment = webHostEnvironment;
-            Booking = new Models.Booking();
+            Booking = new Booking();
             Task<List<Sailor>> sailors = cService.GetAllSailorsAsync();
             SailorCodes = new SelectList(sailors.Result, "SailorId", "Name");
 

@@ -1,6 +1,6 @@
 ﻿using SejlKlubsApp.Models;
 using SejlKlubsApp.Services.ADO_Service;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

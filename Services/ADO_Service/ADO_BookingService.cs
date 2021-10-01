@@ -25,19 +25,30 @@ namespace SejlKlubsApp.Services.ADO_Service
             string sql = "Select * From Booking";
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sql, connection);
-                using(SqlDataReader dataReader = await command.ExecuteReaderAsync())
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while(await dataReader.ReadAsync())
+                    try
                     {
-                        Booking @booking = new Booking();
-                        @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
-                        @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
-                        @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
-                        @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
-                        bookings.Add(@booking);
+                        await command.Connection.OpenAsync();
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        while (await dataReader.ReadAsync())
+                        {
+                            Booking @booking = new Booking();
+                            @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
+                            @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
+                            @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
+                            @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
+                            bookings.Add(@booking);
+                        }
+                    }
+                    catch (SqlException sx)
+                    {
+                        Console.WriteLine("Database Fejl");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel Fejl");
                     }
                 }
             }
@@ -48,52 +59,95 @@ namespace SejlKlubsApp.Services.ADO_Service
             string sql = $"Select * From Booking Where SailorId=@id";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.AddWithValue("@id", id);
-                using(SqlDataReader dataReader = await command.ExecuteReaderAsync())
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while (dataReader.Read())
+                    try 
                     {
-                        Booking @booking = new Booking();
-                        @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
-                        @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
-                        @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
-                        @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
-                        bookings.Add(@booking);
+                        command.Parameters.AddWithValue("@id", id);
+                        await command.Connection.OpenAsync();
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        while (dataReader.Read())
+                        {
+                            Booking @booking = new Booking();
+                            @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
+                            @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
+                            @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
+                            @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
+                            bookings.Add(@booking);
+                        }
+                    }
+                    catch (SqlException sx)
+                    {
+                        Console.WriteLine("Database Fejl");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel Fejl");
                     }
                 }
             }
             return bookings;
         }
-        public async Task BookBoat(Booking booking)
+        public async Task<bool> BookBoat(Booking booking)
         {
             string sql = $"Insert Into Booking(BoatId, SailorId, DateFrom, DateTo) Values(@BoatId, @SailorId, @DateFrom, @DateTo)";
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
                 using(SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@BoatId", booking.BoatId);
-                    command.Parameters.AddWithValue("@SailorId", booking.SailorId);
-                    command.Parameters.AddWithValue("@DateFrom", booking.DateFrom);
-                    command.Parameters.AddWithValue("@DateTo", booking.DateTo);
-                    int affectedRows = await command.ExecuteNonQueryAsync();
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        command.Parameters.AddWithValue("@BoatId", booking.BoatId);
+                        command.Parameters.AddWithValue("@SailorId", booking.SailorId);
+                        command.Parameters.AddWithValue("@DateFrom", booking.DateFrom);
+                        command.Parameters.AddWithValue("@DateTo", booking.DateTo);
+                        int affectedRows = await command.ExecuteNonQueryAsync();
+                        if (affectedRows == 1)
+                        {
+                            return true;
+                        }
+                    }
+                    catch (SqlException sx)
+                    {
+                        Console.WriteLine("Database Fejl");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel Fejl");
+                    }
+                    return false;
                 }
             }
         }
-        public async Task DeleteBookingAsync(Booking booking)
+        public async Task<Booking> DeleteBookingAsync(Booking booking)
         {
             string sql = $"Delete From Booking Where BookingId=@id";
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@id", booking.BookingId);
-                    int affectedRows = await command.ExecuteNonQueryAsync();
+                    try
+                    {
+                        await command.Connection.OpenAsync();
+                        command.Parameters.AddWithValue("@id", booking.BookingId);
+                        int affectedRows = await command.ExecuteNonQueryAsync();
+                        if (affectedRows == 1)
+                        {
+                            return booking;
+                        }
+                    }
+                    catch (SqlException sx)
+                    {
+                        Console.WriteLine("Database Fejl");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Generel Fejl");
+                    }
                 }
+                return null;
             }
         }
         public async Task<Booking> GetBookingByIdAsync(int id)
@@ -102,22 +156,34 @@ namespace SejlKlubsApp.Services.ADO_Service
             string sql = $"Select * From Booking Where BookingId=@id";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                await connection.OpenAsync();
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@id", id);
-                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
-                    while (dataReader.Read())
+                    try
                     {
-                        @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
-                        @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
-                        @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
-                        @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
-                        @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
+                        command.Parameters.AddWithValue("@id", id);
+                        await command.Connection.OpenAsync();
+                        SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                        while (dataReader.Read())
+                        {
+                            @booking.BookingId = Convert.ToInt32(dataReader["BookingId"]);
+                            @booking.BoatId = Convert.ToInt32(dataReader["BoatId"]);
+                            @booking.SailorId = Convert.ToInt32(dataReader["SailorId"]);
+                            @booking.DateFrom = Convert.ToDateTime(dataReader["DateFrom"]);
+                            @booking.DateTo = Convert.ToDateTime(dataReader["DateTo"]);
+                            return @booking;
+                        }
                     }
+                    catch(SqlException sx)
+                    {
+                        Console.WriteLine("Database Fejl");
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine("Generel Fejl");
+                    }
+                    return null;
                 }
             }
-            return @booking;
         }
     }
 }

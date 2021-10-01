@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SejlKlubsApp.Models;
 
-namespace SejlKlubsApp.Services.Interfaces
+namespace SejlKlubsApp.Interfaces
 {
     public interface IBoatService
     {

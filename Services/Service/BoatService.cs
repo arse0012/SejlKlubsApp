@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SejlKlubsApp.Models;
 using SejlKlubsApp.Services.ADO_Service;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 
 namespace SejlKlubsApp.Services.Service
 {

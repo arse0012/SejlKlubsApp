@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SejlKlubsApp.Models;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 using SejlKlubsApp.Services.Service;
 
 namespace SejlKlubsApp.Pages

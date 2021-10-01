@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SejlKlubsApp.Services.ADO_Service;
-using SejlKlubsApp.Services.Interfaces;
+using SejlKlubsApp.Interfaces;
 using SejlKlubsApp.Services.Service;
 
 namespace SejlKlubsApp
